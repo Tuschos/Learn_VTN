@@ -7,9 +7,11 @@ Linux là một hệ điều hành mã nguồn mở, dựa trên nhân Linux, đ
 ## Kiến trúc hệ điều hành Linux
 
 Kiến trúc của Linux bao gồm 3 thành phần chính sau:
+
 ![Linux Architecture](Pictures/Kientruc_Linux.jpg)
 
 1. **Kernel (Nhân):** Thành phần cốt lõi của hệ điều hành,chứa các modules, thư viện để quản lý tài nguyên hệ thống và giao tiếp giữa phần cứng và phần mềm.
+
 ![Kernel version](Pictures/kernel_vesion.jpg)
 
 2. **Shell:** Là 1 chương trình có chức năng thực thi các lệnh (command) từ người dùng hoặc ứng dụng yêu cầu chuyển đến cho Kernel xử lý. Shell có thể hoạt động thông qua giao diện dòng lệnh hoặc các Script. Các loại Shell:
@@ -71,5 +73,6 @@ Dưới đây là một số lệnh cơ bản thường được sử dụng tro
     # g (group): Nhóm sở hữu tệp tin.
     # o (others): Những người khác.
     # a (all): Tất cả (user, group, và others).
+
 ![chmod](Pictures\chmod.png)
       
