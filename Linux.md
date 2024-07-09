@@ -74,5 +74,5 @@ Dưới đây là một số lệnh cơ bản thường được sử dụng tro
     # o (others): Những người khác.
     # a (all): Tất cả (user, group, và others).
 
-![chmod](Pictures\chmod.png)
+![chmod](Pictures\chmod.jpg)
       
