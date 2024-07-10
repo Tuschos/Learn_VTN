@@ -264,7 +264,6 @@ Biến người dùng (User-defined variables) là các biến do người dùng
     ```
 
     Kết quả:
-    
     ![automatic_var](Pictures/automatic_var.jpg)
 
 - `read <option> <varname>` : đọc giá trị từ bàn phím và gán cho biến.
