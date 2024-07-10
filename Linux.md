@@ -54,7 +54,8 @@ Dưới đây là một số lệnh cơ bản thường được sử dụng tro
 - `echo` : In nội dung ra màn hình.
 - `man` : Hiển thị trang hướng dẫn cho lệnh.
 - `ls `: Liệt kê các tập tin và thư mục.
-    ![command_ls](Pictures/command_ls.jpg)
+
+![command_ls](Pictures/command_ls.jpg)
 - `cd`: Thay đổi thư mục hiện tại.
     ```bash 
     cd /path/to/directory
@@ -71,7 +72,8 @@ Dưới đây là một số lệnh cơ bản thường được sử dụng tro
 - `grep` : Tìm kiếm nội dung trong tệp.
 - `< , > , >>` : Định hướng nhập xuất.
 - `|` : Đường ống là hình thức giao tiếp giữa các tiến trình với cơ chế đầu ra của lệnh này sẽ là đầu vào của lệnh khác.
-    ![pipe](Pictures/pipe.jpg)
+
+![pipe](Pictures/pipe.jpg)
 - `sudo` : (Superuser do) thực hiện lệnh với quyền root.
 - `chmod` : Thay đổi quyền truy cập tập tin hoặc thư mục
     ```bash
@@ -262,6 +264,7 @@ Biến người dùng (User-defined variables) là các biến do người dùng
     ```
 
     Kết quả:
+    
     ![automatic_var](Pictures/automatic_var.jpg)
 
 - `read <option> <varname>` : đọc giá trị từ bàn phím và gán cho biến.
@@ -354,4 +357,5 @@ do
 done
 ```
 Kết quả:
+
 ![test](Pictures/test_bash.jpg)
