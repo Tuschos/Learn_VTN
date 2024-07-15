@@ -8,11 +8,11 @@ Linux là một hệ điều hành mã nguồn mở, dựa trên nhân Linux, đ
 
 Kiến trúc của Linux bao gồm 3 thành phần chính sau:
 
-![Linux Architecture](Pictures/Kientruc_Linux.jpg)
+![Linux Architecture](images/Kientruc_Linux.jpg)
 
 1. **Kernel (Nhân):** Thành phần cốt lõi của hệ điều hành,chứa các modules, thư viện để quản lý tài nguyên hệ thống và giao tiếp giữa phần cứng và phần mềm.
 
-![Kernel version](Pictures/kernel_vesion.jpg)
+![Kernel version](images/kernel_vesion.jpg)
 
 2. **Shell:** Là 1 chương trình có chức năng thực thi các lệnh (command) từ người dùng hoặc ứng dụng yêu cầu chuyển đến cho Kernel xử lý. Shell có thể hoạt động thông qua giao diện dòng lệnh hoặc các Script. Các loại Shell:
     - ***Bourne Shell (sh)***: Shell gốc của Unix.
@@ -43,7 +43,7 @@ Hệ thống tập tin của Linux được tổ chức dưới dạng một câ
 - **`/usr`**: Chứa các ứng dụng và tập tin người dùng.
 - **`/var`**: Chứa các tập tin biến đổi, như nhật ký hệ thống và hàng đợi thư.
 
-![filesystem](Pictures/filesystem-2.jpg)
+![filesystem](images/filesystem-2.jpg)
 
 # Các lệnh cơ bản trong Ubuntu
 
@@ -55,7 +55,7 @@ Dưới đây là một số lệnh cơ bản thường được sử dụng tro
 - `man` : Hiển thị trang hướng dẫn cho lệnh.
 - `ls `: Liệt kê các tập tin và thư mục.
 
-![command_ls](Pictures/command_ls.jpg)
+![command_ls](images/command_ls.jpg)
 - `cd`: Thay đổi thư mục hiện tại.
     ```bash 
     cd /path/to/directory
@@ -73,7 +73,7 @@ Dưới đây là một số lệnh cơ bản thường được sử dụng tro
 - `< , > , >>` : Định hướng nhập xuất.
 - `|` : Đường ống là hình thức giao tiếp giữa các tiến trình với cơ chế đầu ra của lệnh này sẽ là đầu vào của lệnh khác.
 
-![pipe](Pictures/pipe.jpg)
+![pipe](images/pipe.jpg)
 - `sudo` : (Superuser do) thực hiện lệnh với quyền root.
 - `chmod` : Thay đổi quyền truy cập tập tin hoặc thư mục
     ```bash
@@ -88,10 +88,10 @@ Dưới đây là một số lệnh cơ bản thường được sử dụng tro
     # o (others): Những người khác.
     # a (all): Tất cả (user, group, và others).
     ```
-    ![chmod](Pictures/chmod.jpg)
+    ![chmod](images/chmod.jpg)
 
 - `chown` : Thay đổi chủ sở hữu của tệp.
-    ![command_chown](Pictures/command_chown.png)
+    ![command_chown](images/command_chown.png)
 - `find` : Tìm kiếm file.
     ```bash 
     find path -name file_name   # tìm kiếm theo tên
@@ -181,7 +181,9 @@ dpkg là công cụ quản lý gói cấp thấp trong các hệ thống dựa t
     dpkg -S /path/to/file
     ```
 
-# Bash Programing
+# Bash Script
+Bash script là một tập hợp các câu lệnh được viết trong ngôn ngữ shell, thường là Bash (Bourne Again SHell), để tự động hóa các tác vụ trên hệ điều hành Unix và Linux. Bash script cho phép bạn kết hợp các lệnh lại với nhau và thực thi chúng như một chương trình đơn lẻ.
+
 ## 1.Các loại biến
 - Biến môi trường 
 - Biến người dùng
@@ -197,9 +199,9 @@ Biến môi trường trong Linux rất quan trọng vì chúng lưu trữ thôn
     # Ví dụ: export MYNAME=“Du Tu”
     ```
 - `env` : Lệnh xem các biến môi trường.
-    ![command_env](Pictures/command_env.png)
+    ![command_env](images/command_env.png)
 - `printenv` : Lệnh xem giá trị của biến môi trường.
-    ![printenv](Pictures/command_printenv.jpg)
+    ![printenv](images/command_printenv.jpg)
 - `unset` : Xóa biến môi trường.
     ```bash
     unset VAR_NAME
@@ -264,15 +266,15 @@ Biến người dùng (User-defined variables) là các biến do người dùng
     ```
 
     Kết quả:
-    ![automatic_var](Pictures/automatic_var.jpg)
+    ![automatic_var](images/automatic_var.jpg)
 
 - `read <option> <varname>` : đọc giá trị từ bàn phím và gán cho biến.
     ```bash
     read -p "Nhap ten cua ban: " name
     ```
 
-## 2. Các phép toán số học trong Bash Progamming
-Bash programming đầy đủ các phép toán số học cơ bản.
+## 2. Các phép toán số học trong Bash Script
+Bash script đầy đủ các phép toán số học cơ bản.
 ```bash
 # expr <biểu thức>
 expr 4 + 6     # In ra: 10
@@ -334,8 +336,8 @@ do
 done
 ```
 
-**1 chương trinh đơn gian**
-
+### 5.Ví dụ chương trinh đơn gian
+**Chương trình test if,while**
 ```bash
 !/bin/bash
 
@@ -357,4 +359,37 @@ done
 ```
 Kết quả:
 
-![test](Pictures/test_bash.jpg)
+![test](images/test_bash.jpg)
+
+
+**Chương trình khởi tạo 1 terminal cá nhân**
+```bash
+#!/bin/bash
+
+echo "Welcome to the simple shell. Type 'exit' to quit."
+
+# Vòng lặp vô hạn để liên tục đọc và thực thi lệnh
+while true; do
+    # Hiển thị dấu nhắc và đọc lệnh từ người dùng
+    read -e -p "simple_shell:$(pwd)> " command
+
+    # Kiểm tra nếu lệnh là 'exit' thì thoát khỏi vòng lặp
+    if [ "$command" == "exit" ]; then
+        break
+    fi
+
+    # Thực thi lệnh người dùng nhập
+    eval $command
+
+    # Kiểm tra nếu lệnh thực thi không thành công
+    if [ $? -ne 0 ]; then
+        echo "Error: Command failed to execute."
+    fi
+done
+
+echo "Goodbye!"
+```
+
+Kết quả :
+
+![simple_shell](images/simple_terminal.jpg)
