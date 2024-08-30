@@ -1,0 +1,36 @@
+---
+- name: Configure sudo use_pty
+  lineinfile:
+    line: Defaults use_pty
+    dest: /etc/sudoers.d/011_use_pty
+    mode: "0440"
+    state: present
+    create: true
+    validate: visudo -cf %s
+
+- name: Configure sudo logfile
+  lineinfile:
+    line: Defaults logfile=/var/log/sudo.log
+    dest: /etc/sudoers.d/012_logfile
+    mode: "0440"
+    state: present
+    create: true
+    validate: visudo -cf %s
+
+- name: Configure sudo passwd_timeout
+  lineinfile:
+    line: Defaults passwd_timeout=1
+    dest: /etc/sudoers.d/015_passwdtimeout
+    mode: "0440"
+    state: present
+    create: true
+    validate: visudo -cf %s
+
+- name: Configure sudo timestamp_timeout
+  lineinfile:
+    line: Defaults timestamp_timeout=5
+    dest: /etc/sudoers.d/016_timestamptimeout
+    mode: "0440"
+    state: present
+    create: true
+    validate: visudo -cf %s

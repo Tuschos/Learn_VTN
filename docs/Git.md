@@ -48,7 +48,7 @@ git config --global user.name "Tên của bạn"
 git config --global user.email "email@example.com"
 ```
 Sau khi config thông tin cá nhân 
-![git1](images/git1.jpg)
+![git1](../images/git1.jpg)
 
 ## 7. Các Thao Tác Ban Đầu
 ### 7.1 Khởi Tạo Repo Với Git Init
@@ -60,7 +60,7 @@ git init
 ```sh
 git clone <url>
 ```
-![git2](images/git2.jpg)
+![git2](../images/git2.jpg)
 
 ## 8. Git Commit
 Commit là một bản chụp của mã nguồn tại một thời điểm cụ thể.
@@ -71,7 +71,7 @@ Một Commit Chứa Những Thông Tin Gì?
 - Thời gian commit
 - Các thay đổi trong mã nguồn
 
-![git3](images/git3.jpg)
+![git3](../images/git3.jpg)
 
 **Amending**
 Trường hợp commit nhưng bị quên add một số file nào đó và không muốn tạo ra một commit mới thì có thể sử dụng lệnh commit kết hợp --amend để gộp các file đó và bổ sung vào commit cuối cùng nên không tạo ra commit mới.
@@ -79,10 +79,10 @@ Trường hợp commit nhưng bị quên add một số file nào đó và khôn
 ## 9. Làm việc với nhánh
 - `git branch <branchname>`: Tạo 1 nhánh mới, hoặc có thể sử dụng `git checkout -b <branch>` để tạo 1 nhánh mới và nhảy sang nhánh đó.
 - `git checkout <branch>` : Nhảy sang 1 nhánh khác.
-![git4](images/git4.jpg)
+![git4](../images/git4.jpg)
 
 - `git branch -m <branch> <branch_rename>` : Đổi tên nhánh.
-![git5](images/git5.jpg)
+![git5](../images/git5.jpg)
 
 ## 10. Thao tác liên quan khác
 
@@ -185,4 +185,4 @@ git stash --help
 
 # 14. Git với giao diện đồ họa
 Extension Gitlens của VScode
-![git](images/git6.jpg)
+![git](../images/git6.jpg)

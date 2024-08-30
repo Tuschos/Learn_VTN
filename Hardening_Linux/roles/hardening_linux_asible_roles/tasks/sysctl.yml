@@ -1,0 +1,21 @@
+---
+
+- name: Recommended sysctl
+  sysctl:
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+    state: present
+    reload: true
+    ignoreerrors: true
+  with_items: "{{ sysctl_config }}"
+  notify:
+    - restart sysctl
+
+- name: Protect sysctl.conf
+  ansible.builtin.file:
+    path: /etc/sysctl.conf
+    owner: root
+    group: root
+    mode: "0440"
+    modification_time: preserve
+    access_time: preserve

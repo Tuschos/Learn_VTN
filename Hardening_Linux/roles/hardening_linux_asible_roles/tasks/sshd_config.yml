@@ -1,0 +1,29 @@
+---
+
+- name: Set Permissions on /etc/ssh/sshd_config
+  file:
+    path: /etc/ssh/sshd_config
+    state: file
+    mode: 0640
+    owner: root
+    group: root
+
+- name: SSH configuration
+  lineinfile: 
+    dest: /etc/ssh/sshd_config 
+    regexp: "^{{ item.name }} " 
+    line: "{{ item.name }} {{ item.value }}"
+  with_items:
+    - { name: 'Protocol',                value: '2'          }
+    - { name: 'PermitRootLogin',         value: 'no'         }
+    - { name: 'PermitUserEnvironment ',  value: 'no'         }
+    - { name: 'PasswordAuthentication',  value: 'no'         }
+    - { name: 'PubkeyAuthentication',    value: 'yes'        }
+    - { name: 'X11Forwarding',           value: 'no'         }
+    - { name: 'Ciphers',                 value: 'aes256-ctr,aes192-ctr,aes128-ctr'         }
+    - { name: 'Port',                    value: '1234'       }
+    - { name: 'ClientAliveInterval',     value: '600'        }
+    - { name: 'ClientAliveCountMax',     value: '0'          }
+  notify:
+    - restart ssh
+  when: ansible_distribution == "CentOS" or ansible_distribution == "Ubuntu"

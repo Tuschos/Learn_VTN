@@ -1,0 +1,27 @@
+---
+
+# Update the Packages to the latest
+#******************************************************************************
+- name: Update all packages
+  package:
+    name: "*"
+    state: latest
+  when: ansible_distribution != "Ubuntu"
+
+- name: Update Ubuntu
+  apt:
+    upgrade: dist
+  when: ansible_distribution == "Ubuntu"
+
+- name: Set SELinux to enforcing mode
+  command: setenforce 1
+
+# Include task files
+- include: auditd.yml
+- include: cron.yml
+- include: limits.yml
+- include: login_defs
+- include: pam_passwd.yml
+- include: sudoer.yml
+- include: sshd_config.yml
+- include: sysctl.yml

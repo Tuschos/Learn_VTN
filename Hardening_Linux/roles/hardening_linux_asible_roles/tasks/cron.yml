@@ -1,0 +1,22 @@
+---
+
+- name: Set cron permissions
+      ansible.builtin.file:
+        path: "{{ item }}"
+        mode: "0700"
+        owner: root
+        group: root
+      with_items:
+        - /etc/cron.d
+        - /etc/cron.daily
+        - /etc/cron.hourly
+        - /etc/cron.weekly
+        - /etc/cron.monthly
+
+    - name: Set crontab permissions
+      ansible.builtin.file:
+        path: /etc/crontab
+        mode: "0600"
+        owner: root
+        group: root
+        state: file

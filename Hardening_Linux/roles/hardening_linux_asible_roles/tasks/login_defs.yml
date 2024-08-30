@@ -1,0 +1,11 @@
+---
+
+- name: login.defs configuration
+  lineinfile: 
+    dest: /etc/login.defs 
+    regexp: "^{{ item.name }} " 
+    line: "{{ item.name }} {{ item.value }}"
+  with_items:
+    - { name: 'PASS_MAX_DAYS',         value: '90'}
+    - { name: 'PASS_MIN_DAYS',         value: '5' }
+    - { name: 'PASS_WARN_AGE',         value: '7' }

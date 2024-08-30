@@ -1,0 +1,6 @@
+---
+
+- name: Limits - add configuratiion file
+  copy:
+    src: limits.txt
+    dest: /etc/security/limits.d/hardening_limits.conf

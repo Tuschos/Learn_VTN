@@ -1,0 +1,2 @@
+pam_password_file_ubuntu: /etc/pam.d/common-password
+pam_password_file_centos: /etc/pam.d/system-auth

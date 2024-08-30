@@ -1,0 +1,8 @@
+[centos]
+localhost
+
+[ubuntu]
+192.168.75.136
+
+[all:vars]
+ansible_user=dutu

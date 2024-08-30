@@ -1,0 +1,17 @@
+---
+- name: Set Password Requirement Parameters Using pam_pwquality in Ubuntu
+  lineinfile:
+    dest: "{{ pam_password_file_ubuntu }}"
+    regexp: "pam_pwquality.so"
+    line: "password requisite pam_pwquality.so try_first_pass retry=3 minlen=12 dcredit=-1 ucredit=-1 ocredit=-1 difok = 6"
+    state: present
+  when: ansible_distribution == "Ubuntu"
+
+
+- name: Set Password Requirement Parameters Using pam_pwquality in CentOS
+  lineinfile:
+    dest: "{{ pam_password_file_centos }}"
+    regexp: "pam_pwquality.so"
+    line: "password requisite pam_pwquality.so try_first_pass retry=3 minlen=12 dcredit=-1 ucredit=-1 ocredit=-1 difok = 6"
+    state: present
+  when: ansible_distribution == "CentOS"

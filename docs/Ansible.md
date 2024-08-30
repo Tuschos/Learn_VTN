@@ -1,20 +1,27 @@
 # Tổng quan về Ansible
 ### Ansible là gì?
 **Ansible** là một công cụ tự động hóa mã nguồn mở được sử dụng để cấu hình hệ thống, triển khai ứng dụng, và quản lý các tác vụ IT khác. Ansible sử dụng ngôn ngữ YAML để định nghĩa các tác vụ cần thực hiện, giúp dễ dàng đọc và viết. Ansible hoạt động mà không cần agent, nghĩa là bạn không cần cài đặt phần mềm client trên các máy chủ đích, mà thay vào đó Ansible sẽ kết nối và thực thi các lệnh qua SSH.
-![a](images/ansible.jpg)
+![a](../images/ansible.jpg)
 
 ### Các khái niệm cơ bản trong Ansible
-- **Host**: Một máy chủ hoặc thiết bị được quản lý bởi Ansible.
-- **Var**: Biến số được sử dụng trong các playbook để lưu trữ thông tin cấu hình hoặc dữ liệu khác.
-- **Group**: Một tập hợp các host. Các host có thể được nhóm lại để áp dụng cấu hình hoặc tác vụ chung.
-- **Inventory**: Tập tin hoặc tập hợp các tập tin liệt kê tất cả các host và nhóm của chúng. Inventory có thể là tĩnh hoặc động (dynamic inventory).
-- **Dynamic Inventory**: Một phương pháp để tự động cập nhật inventory dựa trên các nguồn dữ liệu bên ngoài như cloud, database hoặc các dịch vụ web khác.
-- **Play**: Một tập hợp các nhiệm vụ (task) được áp dụng cho một nhóm các host.
-- **Playbook**: Tập hợp các play. Đây là tệp YAML mô tả các bước cần thực hiện để cấu hình hệ thống hoặc triển khai ứng dụng.
-- **Task**: Một tác vụ cụ thể được thực hiện trên một host, ví dụ như cài đặt phần mềm, sao chép tệp tin hoặc chạy lệnh.
+- **Controller Machine**: Là máy cài Ansible, chịu trách nhiệm quản lý, điều khiển và gởi task tới các máy con cần quản lý.
+
+- **Inventory**: Là file chứa thông tin các server cần quản lý. File này thường nằm tại đường dẫn /etc/ansible/hosts, hoặc có thể tự định nghĩa.
+
+- **Task**: Một block ghi tác vụ cần thực hiện trong playbook và các thông số liên quan. Ví dụ 1 playbook có thể chứa 2 task là: yum update và yum install vim.
+
+- **Play**: là nhóm các task sẽ được thực hiện trên 1 nhóm các hosts.
+
+- **Playbook**: Là file chứa các play của Ansible được ghi dưới định dạng YAML. Máy controller sẽ đọc các task trong Playbook và đẩy các lệnh thực thi tương ứng bằng Python xuống các máy con.
+
+- **Module**: Ansible có rất nhiều module, ví dụ như moduel yum là module dùng để cài đặt các gói phần mềm qua yum. Ansible hiện có hơn ….2000 module để thực hiện nhiều tác vụ khác nhau, bạn cũng có thể tự viết thêm các module của mình nếu muốn.
+
+- **Role**: Là một tập playbook được định nghĩa sẵn để thực thi 1 tác vụ nhất định (ví dụ cài đặt LAMP stack).
+
+- **Handlers**: Handler có chức năng giống như 1 task nhưng chỉ xảy ra khi có điều kiện nào đó. Handler được run khi được notified bởi 1 task
 
 ### Cấu trúc Ansible
-![a](images/ansible5.jpg)
+![a](../images/ansible5.jpg)
 - **Người dùng (User)** là các quản trị viên hoặc nhà phát triển, sử dụng Ansible để thực hiện các tác vụ tự động hóa trên các máy chủ. Người dùng tương tác với Ansible thông qua các lệnh CLI hoặc các playbook.
 
 - **Host Inventory** là danh sách các máy chủ mà Ansible sẽ quản lý. Inventory có thể ở dạng tĩnh (static inventory) hoặc động (dynamic inventory).
@@ -42,7 +49,7 @@
 # Cài đặt và triển khai Ansible lab
 
 ### Mô hình
-![a](images/ansible6.jpg)
+![a](../images/ansible6.jpg)
 
 ### Cài đặt Ansible trên node Ansible Server
 ```bash
@@ -90,10 +97,10 @@ ansible all -m ping
 ```
 
 Ta được kết quả:
-![a](images/ansible1.jpg)
+![a](../images/ansible1.jpg)
 
 1 ví dụ khác sử dụng **ad-hoc command** để tại vim hàng loạt trên group ubuntu sử dụng module `apt` của ansible.
-![a](images/ansible2.jpg)
+![a](../images/ansible2.jpg)
 
 ### Playbook
 Sử dụng lệnh `ansible-playbook` để chạy playbook gồm nhiều plays và tasks.
@@ -122,9 +129,16 @@ Viết 1 playbook để tải và khởi chạy apache2 trên các hosts thuộc
           enabled: true
 ```
 
+1 Play gồm 3 thành phần chính là : name, hosts, tasks
+- name : tên của play.
+- hosts: group các hosts sẽ chạy các tasks.
+- tasks: các tác vụ sử dụng các modules (core,custom) sẽ được chạy trên host.
+
+Trong 1 playbook có thể có nhiều play.
+
 Kết quả khi chạy playbook này:
-![a](images/ansible3.jpg)
-Như trong output trên, ta thấy rằng 3 task có tên là **Install Apache2**, **copy to index.html** và **Restart apache2** mà ta đã định nghĩa trong playbook đã được thực hiện thành công. Nhưng trước khi thực hiện 2 task này, ansible đã thực hiện 1 task có tên là **Gathering Facts**. Khi Ansible bắt đầu thực thi 1 play, ansible sẽ thực hiện task có tên là Gathering Facts này trước tiên để thu thập thông tin về các server mà nó sẽ connect tới như: hệ điều hành, hostname, IP, địa chỉ MAC của tất cả các interfaces... 
+![a](../images/ansible3.jpg)
+Như trong output trên, ta thấy rằng 3 task có tên là **Install Apache2**, **copy to index.html** và **Restart apache2** mà ta đã định nghĩa trong playbook đã được thực hiện thành công. Nhưng trước khi thực hiện 3 task này, ansible đã thực hiện 1 task có tên là **Gathering Facts**. Khi Ansible bắt đầu thực thi 1 play, ansible sẽ thực hiện task có tên là **Gathering Facts** này trước tiên để thu thập thông tin về các server mà nó sẽ connect tới như: hệ điều hành, hostname, IP, địa chỉ MAC của tất cả các interfaces... 
 
 Một điểm cần lưu ý nữa trong output trên đó là **changed=3** với client 1 và **changed=2** với client2, đây là tổng số lượng task trong play có tác động làm xảy ra thay đổi nào đó trên remote host, ví dụ như: các thay đổi về cài đặt hoặc xóa package, thêm sửa xóa file, hoặc đơn giản là thực hiện câu lệnh echo. Một số trường hợp task thực hiện xong không có cờ changed này do không làm thay đổi gì trên hệ thống của remote host như ping hoặc như phía trên vì tôi đã copy trước file index.html sang bên client2 trước đó bằng 1 playbook khác.
 
@@ -148,4 +162,136 @@ Handler có chức năng giống như 1 task nhưng chỉ xảy ra khi có đi�
        state: started 
 ```
 
-![a](images/ansible4.jpg)
+![a](../images/ansible4.jpg)
+
+### Variables
+Variables trong Ansible là các giá trị động có thể thay đổi trong quá trình thực thi playbook. Có nhiều nơi mà bạn có thể định nghĩa và sử dụng biến:
+
+**1. Playbook Variables**: Được định nghĩa trong playbook và chỉ có hiệu lực trong playbook đó
+```yml
+- hosts: ubuntu
+  vars:
+    docker_user: root
+    docker_pkgs:
+      - docker.io
+      - docker-compose
+```
+
+**2. Inventory Variables**: Được định nghĩa trong file inventory và có thể áp dụng cho host hoặc nhóm host.
+```yml 
+[ubuntu]
+client1 ansible_hosts=192.168.75.133 ansible_user=root #Biến cho tùng host
+client1 ansible_hosts=192.168.75.136 ansible_user=root
+
+[ubuntu:vars]
+ansible_password=abc #Biến cho group các hosts.
+```
+
+**3. Role Variables**: Được định nghĩa trong các file `vars` của roles.
+
+**4. Sử dụng biến**: Lấy giá trị của biến trong playbook ta dùng:**{{ <var_name> }}**
+
+### Roles
+
+Roles trong Ansible là một cách tổ chức các playbooks và các task liên quan một cách có cấu trúc và có tổ chức hơn. Một role bao gồm các thành phần chính sau:
+
+- **Tasks**: Đây là nơi chứa các task chính mà role sẽ thực hiện. File này thường được đặt tại roles/<role_name>/tasks/main.yml.
+
+- **Vars**: Chứa các biến sử dụng trong role, thường nằm tại `roles/<role_name>/vars/main.yml`.
+
+- **Handlers**: Đây là các task được gọi bởi các task khác khi có sự thay đổi trạng thái. File này thường nằm tại `roles/<role_name>/handlers/main.yml`.
+
+- **Templates**: Chứa các file template (thường là các file cấu hình) sử dụng Jinja2 template engine. Các file template thường nằm tại `roles/<role_name>/templates/`.
+
+- **Files**: Chứa các file tĩnh, ví dụ như các script hoặc các file cấu hình cố định. Các file này thường nằm tại `roles/<role_name>/files/`.
+
+- **Meta**: Chứa các thông tin meta về role như dependencies. Thông tin này nằm tại `roles/<role_name>/meta/main.yml`.
+
+#### Install docker, docker-compose và chạy hello-world với docker bằng ansible roles trên các hosts.
+
+Cấu trúc cây thư mục của project:
+```bash
+.
+├── hosts
+├── install_docker.yml
+└── roles
+    └── docker
+        ├── tasks
+        │   └── main.yml
+        └── vars
+            └── main.yml
+```
+
+Nội dung file cấu hình `/etc/ansible/ansible.cfg`
+```bash
+[default]
+inventory      = /root/ansible_porject/hosts
+roles_path     = /root/ansible_project/roles
+```
+
+Nội dung file hosts
+```yml
+[local]
+1localhost ansible_host=92.168.75.131
+
+[ubuntu]
+client1 ansible_host=192.168.75.133
+client2 ansible_host=192.168.75.136
+
+[all:var]
+ansible_user: root
+```
+
+Các **vars** được sử dụng trong roles docker được lưu trong `roles/docker/vars/main.yml`
+```yml
+---
+docker-pkgs:    # Biến lưu tên các package sẽ được cài, biến dạng list
+  - docker.io
+  - docker-compose
+```
+
+Các **tasks** cần làm để cài đặt và chạy thử 1 container bằng docker được lưu trong `roles/docker/tasks/main.yml
+ 
+```yml
+---
+  - name: Update Apt package
+    apt:
+      update_cache: yes
+      cache_valid_time: 86400
+
+  - name: Install docker
+    apt:
+      name: '{{ item }}'
+      state: latest
+    loop: '{{ docker-pkgs }}'           #Biến docker-pkgs được định nghĩa trong file vars/main.yml
+
+  - name: start docker.service
+    service:
+      name: docker
+      state: started
+      enabled: yes
+
+  - name: Test docker run hello-world
+    command: docker run hello-world
+    register: hello_docker              # Lưu trữ đầu ra của lệnh command vào biến hello_docker
+
+  - debug:
+      msg: '{{ hello_docker.stdout }}'  # In nội dung của biến hello_docker
+```
+
+Playbook sử dụng roles để cài đặt vào chạy thử docker được lưu trong file `install_docker.yml`
+```yml
+---
+- name: install & configure docker & docker-compose on Ubuntu
+  hosts: ubuntu
+  become: true
+  vars:
+    docker_user: root
+  roles:
+    - docker
+```
+
+Chạy lệnh `ansible-playbook install_docker.yml` ta được kết quả:
+![a](../images/ansible7.jpg)
+
+**Docker, docker-compose** đã được cài đặt tại 2 máy hosts và chạy thử lệnh `docker run hello-world` đã được debug và trả về kết quả như hình trên.

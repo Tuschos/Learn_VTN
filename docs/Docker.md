@@ -41,14 +41,14 @@ docker version
 ```
 Câu lệnh sẽ trả về phiên bản của Docker client và Daemon (server)
 
-![a](images/docker1.jpg)
+![a](../images/docker1.jpg)
 
 
 #### Tìm kiếm image trên registry
 ```bash
 docker search python
 ```
-![a](images/docker3.jpg)
+![a](../images/docker3.jpg)
 
 - NAME: Tên của Image
 - DESCRIPTION: Mô tả về image
@@ -67,7 +67,7 @@ sudo systemctl start docker
 ```
 
 Kiểm tra xem Docker đã chạy chưa
-![a](images/docker2.jpg)
+![a](../images/docker2.jpg)
 
 ### 3. Cấu hình proxy cho Docker
 - Tạo file config.json trong /etc/docker/
@@ -75,7 +75,7 @@ Kiểm tra xem Docker đã chạy chưa
 sudo vim /etc/docker/config.json
 ```
 - cầu hình proxy cho docker client và docker daemon
-![a](images/docker5.jpg)
+![a](../images/docker5.jpg)
 
 # Các câu lệnh cơ bản
 
@@ -85,7 +85,7 @@ sudo vim /etc/docker/config.json
 docker images
 ```
 
-![Docker Images](images/docker7.jpg)
+![Docker Images](../images/docker7.jpg)
 
 - `REPOSITORY`: Tên của image
 - `TAG`: Phiên bản của image
@@ -96,7 +96,7 @@ docker images
 docker ps  -a
 ```
 
-![PS](images/docker6.jpg)
+![PS](../images/docker6.jpg)
 
 `-a` hoặc `--all`: Hiển thị toàn bộ số container có trên hệ thống
 - `CONTAINER ID`: ID của container
@@ -158,7 +158,7 @@ docker rm web1
 ```bash
 docker port [name/containerID]
 ```
-![a](images/docker8.jpg)
+![a](../images/docker8.jpg)
 
 # Kiến thức thêm 
 ### 1. Docker CE/Docker EE
@@ -284,5 +284,55 @@ Với 3 bước cơ bản như sau:
 
 - Định nghĩa các ứng dụng thông qua `Dockerfile`
 - Định nghĩa các ứng dụng chạy tách biệt và khởi động cùng nhau trong `docker-compose.yml`
-- Thực thi câu lệnh `docker-compose up -d` để hoàn tất
+- Thực thi câu lệnh `docker-compose up -d` để hoàn tất.
+
+#### Ví dụ về docker-compose
+```yml
+version: '3.7'
+
+services:
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus 
+    ports:
+      - 9000:9090
+    volumes:
+      - ./prometheus:/etc/prometheus
+      - prometheus-data:/prometheus
+    command: 
+      - --config.file:/etc/prometheus/prometheus.yml
+
+  grafana:
+    image: grafana/grafana-oss:latest
+    container_name: grafana
+    ports:
+      - '3000:3000'
+    volumes:
+      - grafana-data:/var/lib/grafana
+    restart: unless-stopped
+    depend-on:
+      - prometheus
+    
+volumes:
+  prometheus-data:
+  grafana-data:
+```
+
+- **version:**: Xác định phiên bản của Docker Compose được sử dụng. Phiên bản 3.7 này hỗ trợ nhiều tính năng mới và cải thiện hiệu suất.
+- **service**: Phần này định nghĩa các dịch vụ (container) sẽ được khởi chạy. Ở đây là prometheus và grafana.
+- **image**: image được sử dụng đề tạo container. Docker sẽ tìm image trong local trước, nếu không có thì sẽ tự pull về từ trên Docker Hub.
+- **container_name**: Đặt tên cho container.
+- **ports**: Ánh xạ port từ container ra port của local.
+- **volumes ( tronng services )**: Gắn kết các thư mục ở local hoặc volume vào trong container.
+    ```yml
+    volumes:
+        - ./prometheus:/etc/prometheus  #Gắn thư mục cấu hình Prometheus từ máy chủ vào container.
+        - prometheus-data:/prometheus:  #Sử dụng volume để lưu trữ dữ liệu Prometheus.
+    ```
+- **command**: Chạy lệnh khi khởi động container.
+- **restart**: Đặt chính sách khởi động lại container (unless-stopped), tức là container sẽ tự động khởi động lại trừ khi bị dừng thủ công.
+- **depends_on**: Xác định sự phụ thuộc (prometheus), tức là Prometheus sẽ khởi động trước Grafana.
+- **volumes (ngoài services)**: Tạo các volumes tại local.
+
+
 
