@@ -13,15 +13,15 @@
     upgrade: dist
   when: ansible_distribution == "Ubuntu"
 
-- name: Set SELinux to enforcing mode
+- name: SELinux - Set SELinux to enforcing mode
   command: setenforce 1
 
-# Include task files
-- include: auditd.yml
-- include: cron.yml
-- include: limits.yml
-- include: login_defs
-- include: pam_passwd.yml
-- include: sudoer.yml
-- include: sshd_config.yml
-- include: sysctl.yml
+# include task files
+- include_tasks: auditd.yml
+- include_tasks: cron.yml
+- include_tasks: limits.yml
+- include_tasks: login_defs.yml
+- include_tasks: pam_passwd.yml
+- include_tasks: sudoer.yml
+- include_tasks: sshd_config.yml
+- include_tasks: sysctl.yml

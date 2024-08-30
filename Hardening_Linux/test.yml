@@ -1,6 +1,6 @@
 ---
-- hosts: centos
+- hosts: all
   become: true
   roles:
-    - hardening_linux
+    - hardening_linux_ansible_roles
     

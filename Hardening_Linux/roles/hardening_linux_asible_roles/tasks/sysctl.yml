@@ -1,6 +1,6 @@
 ---
 
-- name: Recommended sysctl
+- name: Sysctl - Recommended sysctl
   sysctl:
     name: "{{ item.name }}"
     value: "{{ item.value }}"
@@ -11,7 +11,7 @@
   notify:
     - restart sysctl
 
-- name: Protect sysctl.conf
+- name: Sysctl - Protect sysctl.conf
   ansible.builtin.file:
     path: /etc/sysctl.conf
     owner: root

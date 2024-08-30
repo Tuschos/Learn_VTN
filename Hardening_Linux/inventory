@@ -6,3 +6,4 @@ localhost
 
 [all:vars]
 ansible_user=dutu
+ansible_become_password=Duhongtu2003*

@@ -1,0 +1,20 @@
+---
+
+- name: Auditd - Install auditd on Ubuntu
+  apt:
+    name: auditd
+    state: present
+  when: ansible_distribution == "Ubuntu"
+
+- name: Auditd - Install auditd on CentOS
+  yum:
+    name: auditd
+    state: present
+  when: ansible_distribution == "CentOS"
+
+- name: Auditd - Install default /etc/audit/rules.d/rhel7-audit.rules
+  copy: 
+    src: audit-attack.rules
+    dest: /etc/audit/rules.d/audit-attack.rules
+  notify:
+    - restart auditd
