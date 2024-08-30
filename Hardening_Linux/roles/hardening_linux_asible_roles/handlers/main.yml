@@ -1,11 +1,11 @@
 ---
 
-- name: restart sshd
+- name: restart ssh
   service:
     name: sshd
     state: restarted
 
-- name: Restart sysctl
+- name: restart sysctl
   service:
     name: systemd-sysctl
     state: restarted

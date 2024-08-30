@@ -14,7 +14,10 @@
   when: ansible_distribution == "Ubuntu"
 
 - name: SELinux - Set SELinux to enforcing mode
-  command: setenforce 1
+  lineinfile:
+    path: /etc/selinux/config
+    regexp: '^SELINUX='
+    line: 'SELINUX=enforcing'
 
 # include task files
 - include_tasks: auditd.yml

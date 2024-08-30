@@ -1,6 +1,6 @@
 ---
 
-- name: Set Permissions on /etc/ssh/sshd_config
+- name: SSH - Set Permissions on /etc/ssh/sshd_config
   file:
     path: /etc/ssh/sshd_config
     state: file
@@ -8,7 +8,7 @@
     owner: root
     group: root
 
-- name: SSH configuration
+- name: SSH - sshd configuration
   lineinfile: 
     dest: /etc/ssh/sshd_config 
     regexp: "^{{ item.name }} " 

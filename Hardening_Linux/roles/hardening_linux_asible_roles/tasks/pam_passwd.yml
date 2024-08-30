@@ -1,5 +1,5 @@
 ---
-- name: Set Password Requirement Parameters Using pam_pwquality in Ubuntu
+- name: Pam_password - Set Password Requirement Parameters Using pam_pwquality in Ubuntu
   lineinfile:
     dest: "{{ pam_password_file_ubuntu }}"
     regexp: "pam_pwquality.so"
@@ -8,7 +8,7 @@
   when: ansible_distribution == "Ubuntu"
 
 
-- name: Set Password Requirement Parameters Using pam_pwquality in CentOS
+- name: Pam_password - Set Password Requirement Parameters Using pam_pwquality in CentOS
   lineinfile:
     dest: "{{ pam_password_file_centos }}"
     regexp: "pam_pwquality.so"

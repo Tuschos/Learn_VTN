@@ -1,6 +1,6 @@
 ---
 
-- name: login.defs configuration
+- name: Login_defs - login.defs configuration
   lineinfile: 
     dest: /etc/login.defs 
     regexp: "^{{ item.name }} " 

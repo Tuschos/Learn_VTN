@@ -1,0 +1,4 @@
+*   hard    maxlogins   10
+*   hard    core        0
+*   soft    nproc       2048
+*   hard    nproc       4096

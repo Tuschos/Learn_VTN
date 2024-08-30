@@ -189,13 +189,13 @@ Các quy tắc kiểm toán được cấu hình trong file **`/etc/audit/audit.
     ```bash
     ausearch -k passwd_changes
     ```
-### 8.Optimizing sysctl parameters
+### 8.Optimizing sysctl Parameters
 Tham khảo [**tại đây**](./roles/hardening_linux_asible_roles/defaults/main.yml)
 
 
-## Một số file thường config 
+### 9. Some Other Common Config Files
 
-### 1. `/etc/security/limits.conf`
+#### 9.1. `/etc/security/limits.conf`
 Mỗi dòng trong tệp này có định dạng sau:
 ```
 <domain>        <type>  <item>  <value>         
@@ -229,7 +229,7 @@ Mỗi dòng trong tệp này có định dạng sau:
 
 Các config nên dùng của file `/etc/security/limits.conf`:
 ```bash
-*   hard    maxlogins   5
+*   hard    maxlogins   10
 *   hard    core        0
 *   soft    nproc       2048
 *   hard    nproc       4096        
@@ -240,3 +240,51 @@ Lần lượt các cấu hình trên để:
 - Kích thước tệp core dump được tạo ra khi 1 chương trình bị lỗi bằng 0 KB, có nghĩa là không cho tạo tệp core dump vì tệp core dump có thể chứa 1 số thông tin nhạy cảm, dữ liệu bí mật. Có thể tiết kiệm tài nguyên.
 - Đặt giới hạn mềm, một người dùng chỉ được phép khởi tạo tối đa 1024 tiến trình tại bất kỳ thời điểm nào nhưng vẫn có thể tăng giới hạn tiến trình nhưng không vượt quá giới hạn cứng.
 - Đặt giới hạn cứng, một người dùng không thể khởi tạo quá 2048 tiến trình đồng thời.
+
+## III. Thực hành với Ansible.
+- Thực hành với 2 VM (CentOS 9, Ubuntu 20.04). Trong đó VM1 CentOS 9 được cài đặt ansible để chạy các playbook lên chính nó và VM2 Ubuntu.
+- Project có cây thư mục như sau:
+```
+[dutu@AnsibleServer Hardening_Linux]$ tree
+.
+├── ansible.cfg
+├── inventory
+├── README.md
+├── roles
+│   └── hardening_linux_ansible_roles
+│       ├── defaults
+│       │   └── main.yml
+│       ├── files
+│       │   ├── audit-attack.rules
+│       │   └── limits.txt
+│       ├── handlers
+│       │   └── main.yml
+│       ├── tasks
+│       │   ├── auditd.yml
+│       │   ├── cron.yml
+│       │   ├── limits.yml
+│       │   ├── login_defs.yml
+│       │   ├── main.yml
+│       │   ├── pam_passwd.yml
+│       │   ├── sshd_config.yml
+│       │   ├── sudoer.yml
+│       │   └── sysctl.yml
+│       └── vars
+│           └── main.yml
+└── test.yml
+```
+- VM1 thiết lập kết nối ssh đến VM2 và chính nó, kết nối thành công kiểm tra bằng lệnh:
+    ```bash
+    ansible -i inventory all -m ping
+    ```
+    ![a](../images/hardening.jpg)
+
+- Kết nối thành công, chạy play book **`test.yml`** để triển khai hardening lên 2 VM.
+    ```bash
+    ansible-playbook -i inventory test.yml
+    ```
+    **Kết Quả:**
+    ![a](../images/hardening1.jpg)  
+    ![a](../images/hardening2.jpg)
+
+Các cấu hình Hardening Linux đã được áp dụng cho 2 VM. Sau khi cấu hình xong chúng ta cần reboot lại 2 VM. 

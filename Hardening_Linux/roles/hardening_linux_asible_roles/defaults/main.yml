@@ -4,22 +4,22 @@ sysctl_config:
   # These settings eliminate an entire class of security vulnerabilities:
   # time-of-check-time-of-use cross-privilege attacks using guessable
   # filenames (generally seen as "/tmp file race" vulnerabilities).
-  fs.protected_hardlinks: 1
-  fs.protected_symlinks: 1
+  - { name: fs.protected_hardlinks, value: 1 }
+  - { name: fs.protected_symlinks, value: 1 }
 
   # For more info on the following settings see: https://www.kernel.org/doc/html/latest/admin-guide/sysctl/fs.html
   # Restrict FIFO special device creation behavior
-  fs.protected_fifos: 1
+  - { name: fs.protected_fifos, value: 1 }
   # Restrict regular files creation behavior
-  fs.protected_regular: 2
+  - { name: fs.protected_regular, value: 2 }
 
   # Prevent core dumps with SUID. These are usually only
   # needed by developers and may contain sensitive information. | sysctl-31
-  fs.suid_dumpable: 0
+  - { name: fs.suid_dumpable, value: 0 }
 
   # Controls whether core dumps will append the PID to the core filename
   # Useful for debugging multi-threaded applications
-  kernel.core_uses_pid: 1
+  - { name: kernel.core_uses_pid, value: 1 }
 
   # When an attacker is trying to exploit the local kernel, it is often
   # helpful to be able to examine where in memory the kernel, modules,
@@ -37,10 +37,10 @@ sysctl_config:
   # to check which kernel Tails is running and then fetch the corresponding
   # kernel address map from some external source. This is not hard,
   # but certainly not all malware has such functionality. | Tails-2
-  kernel.kptr_restrict: 2
+  - { name: kernel.kptr_restrict, value: 2 }
 
   # kexec is dangerous: it enables replacement of the running kernel. | Tails-3
-  kernel.kexec_load_disabled: 1
+  - { name: kernel.kexec_load_disabled, value: 1 }
 
   # This setting controls how the kernel behaves towards module changes at
   # runtime. Setting to 1 will disable module loading at runtime.
@@ -62,10 +62,10 @@ sysctl_config:
   # * **64**  - signalling of processes (term, kill, oom-kill)
   # * **128** - reboot/poweroff
   # * **256** - nicing of all RT tasks
-  kernel.sysrq: 0
+  - { name: kernel.sysrq, value: 0 }
 
   # Virtual memory regions protection | sysctl-32
-  kernel.randomize_va_space: 2
+  - { name: kernel.randomize_va_space, value: 2 }
 
   # The PTRACE system is used for debugging.  With it, a single user process
   # can attach to any other dumpable process owned by the same user.  In the
@@ -89,50 +89,50 @@ sysctl_config:
   # To that end, the default is to set the PTRACE scope to "1".  This value
   # may not be appropriate for developers or servers with only admin accounts.
   # kernel.yama.ptrace_scope = 1
-  kernel.yama.ptrace_scope: 1
+  - { name: kernel.yama.ptrace_scope, value: 1 }
 
   # Disable traffic forwarding.
   # Setting the flag to 0 ensures that a system with multiple interfaces (for example, a hard
   # proxy), will never be able to forward packets, and therefore, never serve as a router.
   # | sysctl-01 | sysctl-19
-  net.ipv4.ip_forward: 0
-  net.ipv6.conf.all.forwarding: 0
+  - { name: net.ipv4.ip_forward, value: 0 }
+  - { name: net.ipv6.conf.all.forwarding, value: 0 }
 
   # Enable RFC-recommended source validation feature.
   # If the return packet does not go out the same interface that the corresponding
   # source packet came from, the packet is dropped (and logged if log_martians is set).
   # | sysctl-02
-  net.ipv4.conf.all.rp_filter: 1
-  net.ipv4.conf.default.rp_filter: 1
+  - { name: net.ipv4.conf.all.rp_filter, value: 1 }
+  - { name: net.ipv4.conf.default.rp_filter, value: 1 }
 
   # Reduce the surface on SMURF attacks. | sysctl-04
   # Make sure to ignore ECHO broadcasts, which are only required in broad network analysis.
-  net.ipv4.icmp_echo_ignore_broadcasts: 1
+  - { name: net.ipv4.icmp_echo_ignore_broadcasts, value: 1 }
 
   # Some routers (and some attackers) will send responses that violate RFC-1122 and attempt
   # to fill up a log file system with many useless error messages.
   # | sysctl-03
-  net.ipv4.icmp_ignore_bogus_error_responses: 1
+  - { name: net.ipv4.icmp_ignore_bogus_error_responses, value: 1 }
 
   # Limit the amount of traffic the system uses for ICMP. | sysctl-05
-  net.ipv4.icmp_ratelimit: 100
+  - { name: net.ipv4.icmp_ratelimit, value: 100 }
 
   # Adjust the ICMP ratelimit to include ping, dst unreachable,
   # source quench, ime exceed, param problem, timestamp reply, information reply | sysctl-06
-  net.ipv4.icmp_ratemask: 88089
+  - { name: net.ipv4.icmp_ratemask, value: 88089 }
 
   # Disable TCP timestamps in order to not reveal system uptime. | sysctl-07
-  net.ipv4.tcp_timestamps: 0
+  - { name: net.ipv4.tcp_timestamps, value: 0 }
 
   # Define restriction level for announcing the local source IP | sysctl-08
-  net.ipv4.conf.all.arp_ignore: 1
+  - { name: net.ipv4.conf.all.arp_ignore, value: 1 }
 
   # Define mode for sending replies in response to
   # received ARP requests that resolve local target IP addresses | sysctl-09
-  net.ipv4.conf.all.arp_announce: 2
+  - { name: net.ipv4.conf.all.arp_announce, value: 2 }
 
   # RFC 1337 fix F1 | sysctl-10
-  net.ipv4.tcp_rfc1337: 1
+  - { name: net.ipv4.tcp_rfc1337, value: 1 }
 
   # Attackers use SYN flood attacks to perform a denial of service attack on a system
   # by sending many SYN packets without completing the three way handshake.
@@ -140,89 +140,65 @@ sysctl_config:
   # prevent legitimate connections from succeeding.
   # SYN cookies allow the system to keep accepting valid connections, even if
   # under a denial of service attack. CIS Distro Independent 3.2.8.
-  net.ipv4.tcp_syncookies: 1
+  - { name: net.ipv4.tcp_syncookies, value: 1 }
 
   # Send(router) or accept(host) RFC1620 shared media redirects | sysctl-12
-  net.ipv4.conf.all.shared_media: 1
-  net.ipv4.conf.default.shared_media: 1
+  - { name: net.ipv4.conf.all.shared_media, value: 1 }
+  - { name: net.ipv4.conf.default.shared_media, value: 1 }
 
-  # Accepting source route can lead to malicious networking behavior,
-  # so disable it if not needed. | sysctl-13
-  net.ipv4.conf.all.accept_source_route: 0
-  net.ipv4.conf.default.accept_source_route: 0
-  net.ipv6.conf.all.accept_source_route: 0
-  net.ipv6.conf.default.accept_source_route: 0
+  # Stop clients from circumventing the security
+  # model by using a source routed network packet | sysctl-13
+  - { name: net.ipv4.conf.all.accept_source_route, value: 0 }
+  - { name: net.ipv4.conf.default.accept_source_route, value: 0 }
+  - { name: net.ipv6.conf.all.accept_source_route, value: 0 }
+  - { name: net.ipv6.conf.default.accept_source_route, value: 0 }
 
-  # For non-routers: don't send redirects.
-  # An attacker could use a compromised host to send invalid ICMP redirects to other
-  # router devices in an attempt to corrupt routing and have users access a system
-  # set up by the attacker as opposed to a valid system.
-  # | sysctl-16
-  net.ipv4.conf.all.send_redirects: 0
-  net.ipv4.conf.default.send_redirects: 0
+  # Disable packet forwarding; device must not act as a router | sysctl-14
+  - { name: net.ipv4.conf.all.send_redirects, value: 0 }
+  - { name: net.ipv4.conf.default.send_redirects, value: 0 }
 
-  # Log martian packets
-  # This feature logs packets with un-routable source addresses to the kernel log.
-  # Enabling this feature and logging these packets allows an administrator to investigate
-  # the possibility that an attacker is sending spoofed packets to their system.
-  # | sysctl-17
-  net.ipv4.conf.all.log_martians: 1
-  net.ipv4.conf.default.log_martians: 1
+  # Log invalid packets containing bogus source addresses | sysctl-15
+  - { name: net.ipv4.conf.all.log_martians, value: 1 }
+  - { name: net.ipv4.conf.default.log_martians, value: 1 }
 
-  # Accepting redirects can lead to malicious networking behavior, so disable
-  # it if not needed.
-  # Attackers could use bogus ICMP redirect messages to maliciously alter the system
-  # routing tables and get them to send packets to incorrect networks and allow
-  # your system packets to be captured.
-  # Setting net.ipv4.conf.all.secure_redirects to 0 protects the system from
-  # routing table updates by possibly compromised known gateways.
-  # | sysctl-13 | sysctl-14 | sysctl-15 | sysctl-20
-  net.ipv4.conf.default.accept_redirects: 0
-  net.ipv4.conf.all.accept_redirects: 0
-  net.ipv4.conf.all.secure_redirects: 0
-  net.ipv4.conf.default.secure_redirects: 0
-  net.ipv6.conf.default.accept_redirects: 0
-  net.ipv6.conf.all.accept_redirects: 0
+  # Respond to packets trying to exploit something | sysctl-16
+  # Disable the acceptance of ICMP redirects to prevent MITM attacks.
+  # Attackers use ICMP redirects to modify the system routing tables in order to
+  # launch man-in-the-middle attacks. Setting these flags to 0 disables this.
+  - { name: net.ipv4.conf.default.accept_redirects, value: 0 }
+  - { name: net.ipv4.conf.all.accept_redirects, value: 0 }
 
-  # Ignore RAs on Ipv6. | sysctl-25
-  net.ipv6.conf.all.accept_ra: 0
-  net.ipv6.conf.default.accept_ra: 0
+  # Disable the acceptance of ICMP secure redirects to prevent MITM attacks. | sysctl-17
+  - { name: net.ipv4.conf.all.secure_redirects, value: 0 }
+  - { name: net.ipv4.conf.default.secure_redirects, value: 0 }
+  - { name: net.ipv6.conf.default.accept_redirects, value: 0 }
+  - { name: net.ipv6.conf.all.accept_redirects, value: 0 }
 
-  # Disable acceptance of IPv6 router solicitations messages | sysctl-21
-  net.ipv6.conf.default.router_solicitations: 0
-  net.ipv6.conf.all.router_solicitations: 0
+  # Do not accept ICMP router advertisement messages. | sysctl-18
+  - { name: net.ipv6.conf.all.accept_ra, value: 0 }
+  - { name: net.ipv6.conf.default.accept_ra, value: 0 }
+  - { name: net.ipv6.conf.default.router_solicitations, value: 0 }
+  - { name: net.ipv6.conf.all.router_solicitations, value: 0 }
+  - { name: net.ipv6.conf.default.accept_ra_rtr_pref, value: 0 }
+  - { name: net.ipv6.conf.default.accept_ra_pinfo, value: 0 }
+  - { name: net.ipv6.conf.default.accept_ra_defrtr, value: 0 }
 
-  # Disable Accept Router Preference from router advertisement | sysctl-22
-  net.ipv6.conf.default.accept_ra_rtr_pref: 0
+  # Disable IPv6 auto-configuration. | sysctl-19
+  - { name: net.ipv6.conf.default.autoconf, value: 0 }
+  - { name: net.ipv6.conf.all.autoconf, value: 0 }
 
-  # Disable learning Prefix Information from router advertisement | sysctl-23
-  net.ipv6.conf.default.accept_ra_pinfo: 0
+  # Protect IPv6 against router advertisements. | sysctl-20
+  - { name: net.ipv6.conf.default.dad_transmits, value: 0 }
+  - { name: net.ipv6.conf.default.max_addresses, value: 1 }
 
-  # Disable learning Hop limit from router advertisement | sysctl-24
-  net.ipv6.conf.default.accept_ra_defrtr: 0
+  # Mitigating attacks relying on memory address leaks.
+  # mmap_min_addr should be set to 65536 (64k) to prevent NULL-dereference
+  # attacks and other memory corruption attacks.
+  # | sysctl-27
+  - { name: vm.mmap_min_addr, value: 65536 }
 
-  # Disable IPv6 autoconfiguration | sysctl-26
-  net.ipv6.conf.default.autoconf: 0
-  net.ipv6.conf.all.autoconf: 0
-
-  # Disable neighbor solicitations to send out per address | sysctl-27
-  net.ipv6.conf.default.dad_transmits: 0
-
-  # Assign one global unicast IPv6 addresses to each interface | sysctl-28
-  net.ipv6.conf.default.max_addresses: 1
-
-  # Protect the zero page of memory from userspace mmap to prevent kernel
-  # NULL-dereference attacks against potential future kernel security
-  # vulnerabilities.  (Added in kernel 2.6.23.)
-  #
-  # While this default is built into the Ubuntu kernel, there is no way to
-  # restore the kernel default if the value is changed during runtime; for
-  # example via package removal (e.g. wine, dosemu).  Therefore, this value
-  # is reset to the secure default each time the sysctl values are loaded.
-  vm.mmap_min_addr: 65536
-
-  # These settings are set to the maximum supported value in order to
-  # improve ASLR effectiveness for mmap, at the cost of increased
-  # address-space fragmentation. | Tail-1
-  vm.mmap_rnd_bits: 32
-  vm.mmap_rnd_compat_bits: 16
+  # Controls the number of bits randomized by mmap base address randomization.
+  # Also see the "stack_guard_gap" setting in /proc/sys/vm/ for other memory corruption protection
+  # sysctl-33 | sysctl-34
+  - { name: vm.mmap_rnd_bits, value: 32 }
+  - { name: vm.mmap_rnd_compat_bits, value: 16 }
